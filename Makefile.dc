@@ -1,0 +1,41 @@
+PRGNAME     = potator.elf
+
+SH_DIRECTORY=/opt/toolchains/dc/sh-elf/bin/
+
+# define regarding OS, which compiler to use
+CC 			= kos-cc
+CCP         = kos-c++
+LD          = kos-cc
+
+# change compilation / linking flag options
+CC_OPTS		= -O3 -fomit-frame-pointer -D_ODSDL_ -DMAX__PATH=1024
+CFLAGS		= -I/opt/toolchains/dc/kos-ports/include/SDL $(CC_OPTS)
+CXXFLAGS	= $(CFLAGS) 
+LDFLAGS     = -lSDL -lm -s
+
+# Files to be compiled
+SRCDIR    = ./common/m6502 ./common ./platform/opendingux
+VPATH     = $(SRCDIR)
+SRC_C   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+SRC_CP   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.cpp))
+OBJ_C   = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJ_CP   = $(notdir $(patsubst %.cpp, %.o, $(SRC_CP)))
+OBJS     = $(OBJ_C) $(OBJ_CP)
+
+# Rules to make executable
+all: $(PRGNAME) scramble
+
+$(PRGNAME): $(OBJS)  
+	$(LD) $(CFLAGS) -o $(PRGNAME)$(EXESUFFIX) $^ $(LDFLAGS)
+	
+scramble:
+	${SH_DIRECTORY}sh-elf-objcopy -R .stack -O binary ${PRGNAME} POTATOR.BIN
+
+$(OBJ_C) : %.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_CP) : %.o : %.cpp
+	$(CCP) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(PRGNAME)$(EXESUFFIX) *.o

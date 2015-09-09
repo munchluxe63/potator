@@ -1,0 +1,5 @@
+OUTFILE = potator
+OBJS = ./platform/opendingux/main_od.o ./platform/opendingux/menu.o ./common/gpu.o ./common/watara.o ./common/controls.o ./common/memorymap.o ./common/sound.o ./common/version.o ./common/memory.o ./common/log.o ./common/io.o ./common/interrupts.o ./common/timer.o ./common/m6502/m6502.o
+CFLAGS = -Os -DKOLIBRI -D_ODSDL_
+LIBS = -lSDL  -lm 
+include $(MENUETDEV)/makefiles/Makefile_for_program

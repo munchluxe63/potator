@@ -1,0 +1,33 @@
+CC			= nspire-gcc
+
+CFLAGS  	= -O2 -std=gnu89 -I./common -I./common/m6502 -I./platform/opendingux -I./platform/nspire
+CFLAGS    += -marm -march=armv5te -mtune=arm926ej-s -fno-ipa-sra
+LDFLAGS 	= -Wl,--as-needed -flto
+OUT  		= potator
+
+SDL 		= platform/opendingux/menu.c platform/opendingux/main.c platform/opendingux/input.c platform/opendingux/graphics.c
+NSPIRE 		= platform/nspire/n2DLib.c
+CORE 		= common/io.c common/m6502/m6502.c common/memorymap.c common/memory.c common/timer.c common/interrupts.c common/watara.c common/gpu.c common/controls.c
+SOURCES 	= ${SDL} ${NSPIRE} ${CORE} 
+
+OBJS 		= ${SOURCES:.c=.o}
+
+all 	: ${OUT} gen mkprg
+
+gen 	:
+		genzehn --input ${OUT} --output ${OUT}.tns --compress
+	
+mkprg	:
+		make-prg ${OUT}.tns ${OUT}.prg.tns
+		rm ${OUT}.tns
+		rm ${OUT}
+		mv  ${OUT}.prg.tns ${OUT}.tns
+
+${OUT}	: ${OBJS}
+		${CC} -o ${OUT} ${SOURCES} ${CFLAGS} ${LDFLAGS}
+	
+clean:
+		rm ${OBJS}
+		rm ${OUT}
+		rm ${OUT}.prg.tns
+		rm ${OUT}.tns

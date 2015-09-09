@@ -1,0 +1,47 @@
+PRGNAME     = potator_giz.exe
+
+# define regarding OS, which compiler to use
+EXESUFFIX = 
+TOOLCHAIN = 
+CC          = arm-cegcc-gcc
+CCP         = arm-cegcc-g++
+LD          = arm-cegcc-gcc
+STRIP 		= arm-cegcc-strip
+
+# add SDL dependencies
+SDL_LIB     = 
+SDL_INCLUDE = /opt/cegcc/include/SDL
+
+# change compilation / linking flag options
+F_OPTS		= -I/opt/cegcc/include/ -Os -fomit-frame-pointer -mcpu=arm920 -mtune=arm920t -mstructure-size-boundary=8
+CC_OPTS		= -DGIZMONDO -DSWITCHING_GRAPHICS -D_ODSDL_ -DMAX__PATH=1024 $(F_OPTS)
+CFLAGS		= -I$(SDL_INCLUDE) $(CC_OPTS)
+CXXFLAGS	= $(CFLAGS) 
+LDFLAGS     = -static -L/opt/cegcc/lib/ /opt/cegcc/lib/SDL.dll -lm
+
+# Files to be compiled
+SRCDIR    = ./common/m6502 ./common ./platform/opendingux
+VPATH     = $(SRCDIR)
+SRC_C   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+SRC_CP   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.cpp))
+OBJ_C   = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJ_CP   = $(notdir $(patsubst %.cpp, %.o, $(SRC_CP)))
+OBJS     = $(OBJ_C) $(OBJ_CP)
+
+all: $(PRGNAME) stripping
+
+# Rules to make executable
+$(PRGNAME): $(OBJS)  
+	$(LD) $(CFLAGS) -o $(PRGNAME)$(EXESUFFIX) $^ $(LDFLAGS)
+
+$(OBJ_C) : %.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_CP) : %.o : %.cpp
+	$(CCP) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(PRGNAME)$(EXESUFFIX) *.o
+	
+stripping:
+	$(STRIP) $(PRGNAME)

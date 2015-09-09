@@ -1,0 +1,34 @@
+PRGNAME     = potator
+
+# define regarding OS, which compiler to use
+CC          = mipsel-linux-gcc
+LD          = mipsel-linux-gcc
+
+# change compilation / linking flag options
+F_OPTS		= -DGCW
+CC_OPTS		= -O2 -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 $(F_OPTS)
+CFLAGS		= -I$(SDL_INCLUDE) $(CC_OPTS)
+LDFLAGS     = -lSDL -lm -Wl,--as-needed -Wl,--gc-sections -flto
+
+# Files to be compiled
+SRCDIR    = ./common/m6502 ./common ./platform/opendingux
+VPATH     = $(SRCDIR)
+SRC_C   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+OBJ_C   = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJS     = $(OBJ_C)
+
+all: $(PRGNAME) pack
+
+# Rules to make executable
+$(PRGNAME): $(OBJS)  
+	$(LD) $(CFLAGS) -o $(PRGNAME) $^ $(LDFLAGS)
+
+$(OBJ_C) : %.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(PRGNAME) *.o
+	
+pack	:
+		mv potator ./opk/potator
+		mksquashfs ./opk potator.opk -all-root -noappend -no-exports -no-xattrs
