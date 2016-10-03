@@ -37,7 +37,9 @@ unsigned short keyCoresp[8] = {
   0x10, 0x20, 0x80, 0x40,
 };
 
+#ifndef NOAUDIO
 extern void sound_decrement();
+#endif
 
 gamecfg GameConf;
 
@@ -233,7 +235,9 @@ int main(int argc, char *argv[])
 
 				// Update emulation
 				supervision_exec((unsigned short *) XBuf,1);
+				#ifndef NOAUDIO
 				sound_decrement();
+				#endif
 				graphics_paint();
 				break;
 		}

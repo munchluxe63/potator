@@ -35,12 +35,15 @@ typedef struct {
 const char mnuYesNo[2][16] = {"no", "yes"};
 const char mnuRatio[3][16] = { "1x size","Full screen", "Keep Aspect"};
 const char mnuColor[4][16] = { "White","Amber","Green","Blue"};
+const char mnuSaves[10][16] = { "1","2","3","4","5","6","7","8","9"};
 
 
 MENUITEM MainMenuItems[] = {
 	{"Load rom", NULL, 0, NULL, &menuFileBrowse},
 	{"Continue", NULL, 0, NULL, &menuContinue},
 	{"Reset", NULL, 0, NULL, &menuReset},
+	{"Load State: ", (short *) &GameConf.saves,  8, (char *) &mnuSaves, &menuLoadState},
+	{"Save State: ", (short *) &GameConf.saves,  8, (char *) &mnuSaves, &menuSaveState},
 	{"Ratio: ", (int *) &GameConf.m_ScreenRatio, 2, (const char *) &mnuRatio, NULL},
 	{"Color scheme: ",(int *) &GameConf.m_Color, 3, (const char *) &mnuColor, NULL},
 	{"Show FPS: ", (int *) &GameConf.m_DisplayFPS, 1,(const char *) &mnuYesNo, NULL},
@@ -49,7 +52,7 @@ MENUITEM MainMenuItems[] = {
 };
 
 
-MENU mnuMainMenu = { 7, 0, (MENUITEM *) &MainMenuItems };
+MENU mnuMainMenu = { 9, 0, (MENUITEM *) &MainMenuItems };
 
 
 const char *file_ext[] = { (const char *) ".sv", (const char *) ".bin",  (const char *) ".tns", NULL };

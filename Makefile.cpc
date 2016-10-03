@@ -12,7 +12,7 @@ SDL_LIB     =
 SDL_INCLUDE = 
 
 # change compilation / linking flag options
-F_OPTS		= -DHOME_SUPPORT
+F_OPTS		=
 CC_OPTS		= -O2 -fomit-frame-pointer -fdata-sections -ffunction-sections $(F_OPTS)
 CFLAGS		= -I$(SDL_INCLUDE) $(CC_OPTS)
 CXXFLAGS	=$(CFLAGS) 

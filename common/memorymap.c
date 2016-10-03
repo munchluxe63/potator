@@ -150,12 +150,16 @@ void memorymap_registers_write(uint32 Addr, uint8 Value)
 	case 0x15:
 	case 0x16:	
 	case 0x17:		// ALEK
+	#ifndef NOAUDIO
 		soundport_w(((Addr&0x4)>>2), Addr&3, Value); break;
+	#endif
 		//sound_write(Addr&7, Value); break;
 	case 0x28:
 	case 0x29:
 	case 0x2a: 
+	#ifndef NOAUDIO
 		svision_noise_w(Addr&0x07, Value); break;
+	#endif
 		//sound_noise_write(Addr&0x07, Value); break;
 	case 0x18:
 	case 0x19:

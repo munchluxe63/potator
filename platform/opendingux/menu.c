@@ -749,20 +749,17 @@ void menuFileBrowse(void)
 /* Save current state of game emulated	*/
 void menuSaveState(void) 
 {
-    char szFile[512];
+    char szFile[256];
 	
 	if (cartridge_IsLoaded()) 
 	{
 		Reset_Controls();
-		strcpy(szFile, gameName);
-#ifdef _TINSPIRE
-		strcpy(strrchr(szFile, '.'), ".sta.tns");
-#else
-		strcpy(strrchr(szFile, '.'), ".sta");
-#endif
+		strcpy(szFile, strrchr(gameName,'/')+1);
+		printf("%s\n",szFile);
 		print_string("Saving...", COLOR_OK, COLOR_BG, 8,240-5 -10*3);
 		sv_saveState(szFile,1);
 		print_string("Save OK",COLOR_OK,COLOR_BG, 8+10*8,240-5 -10*3);
+		clear_screen_menu();
 		flip_menu();
 	}
 }
@@ -770,20 +767,16 @@ void menuSaveState(void)
 /* Load current state of game emulated	*/
 void menuLoadState(void) 
 {
-    char szFile[512];
+    char szFile[256];
 	
 	if (cartridge_IsLoaded()) 
 	{
 		Reset_Controls();
-		strcpy(szFile, gameName);
-#ifdef _TINSPIRE
-		strcpy(strrchr(szFile, '.'), ".sta.tns");
-#else
-		strcpy(strrchr(szFile, '.'), ".sta");
-#endif
+		strcpy(szFile, strrchr(gameName,'/')+1);
 		print_string("Loading...", COLOR_OK, COLOR_BG, 8,240-5 -10*3);
 		sv_loadState(szFile,1);
 		print_string("Load OK",COLOR_OK,COLOR_BG, 8+10*8,240-5 -10*3);
+		clear_screen_menu();
 		flip_menu();
 		gameMenu=false;
 		m_Flag = GF_GAMERUNNING;

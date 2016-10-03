@@ -5,7 +5,7 @@ CC          = mipsel-linux-gcc
 LD          = mipsel-linux-gcc
 
 # change compilation / linking flag options
-F_OPTS		= -DGCW
+F_OPTS		= -DGCW -DHOME_SUPPORT
 CC_OPTS		= -O2 -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 $(F_OPTS)
 CFLAGS		= -I$(SDL_INCLUDE) $(CC_OPTS)
 LDFLAGS     = -lSDL -lm -Wl,--as-needed -Wl,--gc-sections -flto

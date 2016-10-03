@@ -126,6 +126,7 @@ typedef struct {
   unsigned int m_DisplayFPS;
   char current_dir_rom[MAX__PATH];
   unsigned int m_Color;
+  unsigned short saves;
 } gamecfg;
 
 extern char gameName[MAX__PATH];

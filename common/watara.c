@@ -243,6 +243,12 @@ int	sv_loadState(char *statepath, int id)
 	iprintf("\nnewPath = %s",newPath);
 #endif
 
+	#ifdef HOME_SUPPORT
+	char tmp[256];
+	snprintf(tmp, sizeof(tmp), "%s/.potator/%s", getenv("HOME"), newPath);
+	snprintf(newPath, sizeof(newPath), "%s", tmp);
+	printf("%s \n", newPath);
+	#endif
 	fp=fopen(newPath,"rb");
 
 	if (fp) {
@@ -288,6 +294,12 @@ int	sv_saveState(char *statepath, int id)
 	iprintf("\nnewPath = %s",newPath);
 #endif
 
+	#ifdef HOME_SUPPORT
+	char tmp[256];
+	snprintf(tmp, sizeof(tmp), "%s/.potator/%s", getenv("HOME"), newPath);
+	snprintf(newPath, sizeof(newPath), "%s", tmp);
+	printf("%s \n", newPath);
+	#endif
 	fp=fopen(newPath,"wb");
 
 	if (fp) {

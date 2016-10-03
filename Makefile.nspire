@@ -1,8 +1,8 @@
 CC			= nspire-gcc
 
 CFLAGS  	= -O2 -std=gnu89 -I./common -I./common/m6502 -I./platform/opendingux -I./platform/nspire
-CFLAGS    += -marm -march=armv5te -mtune=arm926ej-s -fno-ipa-sra
-LDFLAGS 	= -Wl,--as-needed -flto
+CFLAGS    	+= -fdata-sections -ffunction-sections  -marm -march=armv5te -mtune=arm926ej-s -fno-ipa-sra -DNOAUDIO -DNOWAIT
+LDFLAGS 	= -Wl,--as-needed -Wl,--gc-sections -flto
 OUT  		= potator
 
 SDL 		= platform/opendingux/menu.c platform/opendingux/main.c platform/opendingux/input.c platform/opendingux/graphics.c
