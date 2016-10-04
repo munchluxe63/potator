@@ -1,8 +1,10 @@
 PRGNAME     = potator
 
 # define regarding OS, which compiler to use
-CC          = mipsel-linux-gcc
-LD          = mipsel-linux-gcc
+
+TOOLCHAIN   = /opt/gcw0-toolchain/usr/bin/mipsel-linux-
+CC          = $(TOOLCHAIN)gcc
+LD          = $(TOOLCHAIN)gcc
 
 # change compilation / linking flag options
 F_OPTS		= -DGCW -DHOME_SUPPORT
@@ -31,5 +33,8 @@ clean:
 	
 pack: $(PRGNAME)
 	mkdir -p ./opk
-	mv potator ./opk/$(PRGNAME)
+	mv $(PRGNAME) ./opk/$(PRGNAME)
 	mksquashfs ./opk $(PRGNAME).opk -all-root -noappend -no-exports -no-xattrs
+
+upload: pack
+	scp ./$(PRGNAME).opk root@192.168.2.105:/media/GCW_EXT/apps/$(PRGNAME).opk

@@ -9,6 +9,8 @@
 #include "shared.h"
 #include "graphics.h"
 
+#include <time.h>
+
 unsigned int m_Flag;
 unsigned int interval;
 

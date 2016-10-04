@@ -14,5 +14,7 @@ void sound_audio_dma(uint32 Addr, uint8 data);
 void sound_exec(uint32 cycles);
 void audio_turnSound(unsigned char bOn);
 void sound_stream_update(void *userdata, unsigned char *stream, int len);
+void soundport_w(int which, int offset, int data);
+void  svision_noise_w(int offset, int data);
 
 #endif
